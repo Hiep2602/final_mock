@@ -10,7 +10,7 @@ import java.util.List;
 
 public abstract class BaseRecycleAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
     private List<T> mData;
-
+//todo
     public void setData(List<T> data) {
         mData = data;
         notifyDataSetChanged();

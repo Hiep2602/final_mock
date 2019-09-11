@@ -26,21 +26,28 @@
         app:tabTextColor="@android:color/black">
 
         <android.support.design.widget.TabItem
-            android:id="@+id/tbapplication"
-            android:text="Application"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <android.support.design.widget.TabItem
-            android:id="@+id/tabcc"
+            android:id="@+id/tabapp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Application" />
+
         <android.support.design.widget.TabItem
-            android:id="@+id/tabb"
-            android:text="Application"
+            android:id="@+id/tabmusic"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="Application" />
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/tabvideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Application" />
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/tabimage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Application" />
 
     </android.support.design.widget.TabLayout>
 
