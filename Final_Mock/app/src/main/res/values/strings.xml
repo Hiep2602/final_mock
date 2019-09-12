@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Final_Mock</string>
+    <string name="category_app">APP</string>
+    <string name="category_music">MUSIC</string>
+    <string name="category_photo">PHOTO</string>
+    <string name="category_video">VIDEO</string>
+
 </resources>
