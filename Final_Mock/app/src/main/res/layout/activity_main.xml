@@ -12,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
-        android:minHeight="?android:actionBarSize"
-        android:theme="?android:actionBarTheme"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark" />
 
@@ -26,28 +26,28 @@
         app:tabTextColor="@android:color/black">
 
         <android.support.design.widget.TabItem
-            android:id="@+id/tabapp"
+            android:id="@+id/tabChats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Application" />
+            android:text="APPS" />
 
         <android.support.design.widget.TabItem
-            android:id="@+id/tabmusic"
+            android:id="@+id/tabStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Application" />
+            android:text="Music" />
 
         <android.support.design.widget.TabItem
-            android:id="@+id/tabvideo"
+            android:id="@+id/tabCalls"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Application" />
+            android:text="Photo" />
 
         <android.support.design.widget.TabItem
-            android:id="@+id/tabimage"
+            android:id="@+id/tabPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Application" />
+            android:text="Video" />
 
     </android.support.design.widget.TabLayout>
 

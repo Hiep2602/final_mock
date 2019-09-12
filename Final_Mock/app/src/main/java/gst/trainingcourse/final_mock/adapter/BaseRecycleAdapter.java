@@ -6,21 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseRecycleAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
-    private List<T> mData;
-//todo
+    private List<T> mData = new ArrayList<>();
+
     public void setData(List<T> data) {
         mData = data;
         notifyDataSetChanged();
-    }
-
-
-    public void appendItems(List<T> data) {
-        if (data == null) return;
-        mData.addAll(data);
-        notifyItemRangeChanged(getDataSize(), data.size());
     }
 
     private int getDataSize() {
