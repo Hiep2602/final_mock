@@ -19,12 +19,13 @@ public class PageAdapter extends FragmentPagerAdapter {
 
     @StringRes
     private static final int[] TAB_TITLES = new int[]{R.string.category_app, R.string.category_music, R.string.category_photo, R.string.category_video};
-
     private int numOfTabs;
 
-    public PageAdapter(FragmentManager fm, int numOfTabs) {
+
+    public PageAdapter(FragmentManager fm, int numOfTabs, Context context) {
         super(fm);
         this.numOfTabs = numOfTabs;
+        this.mContext = context;
     }
 
     @Override
@@ -37,7 +38,8 @@ public class PageAdapter extends FragmentPagerAdapter {
                 return MusicFragment.newMusicInstance();
 
             case 2:
-                return  PhotoFragment.newPhotoInstance();
+
+                return PhotoFragment.newPhotoInstance();
 
             case 3:
                 return new VideoFragment();

@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         tabPhoto = findViewById(R.id.tabPhoto);
         mViewpager = findViewById(R.id.viewPager);
 
-        adapter = new PageAdapter(getSupportFragmentManager(), mTabLayout.getTabCount());
+        adapter = new PageAdapter(getSupportFragmentManager(), mTabLayout.getTabCount(), MainActivity.this);
         mViewpager.setAdapter(adapter);
         mTabLayout.addOnTabSelectedListener(mOnTabSelect);
         mViewpager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
