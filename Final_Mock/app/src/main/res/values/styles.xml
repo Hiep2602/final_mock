@@ -8,4 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+<!--photo item theme    -->
+    <style name="PhotoTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+    </style>
+
 </resources>
