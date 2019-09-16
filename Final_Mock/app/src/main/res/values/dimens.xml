@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="tv_music_20dp">20sp</dimen>
+    <dimen name="tv_music_20">18sp</dimen>
+    <dimen name="item_photo_90">90dp</dimen>
 </resources>

@@ -4,5 +4,7 @@
     <string name="category_music">MUSIC</string>
     <string name="category_photo">PHOTO</string>
     <string name="category_video">VIDEO</string>
-
+    <string name="menu_search">search</string>
+    <string name="menu_bluetooth">bluetooth</string>
+    <string name="todo">TODO</string>
 </resources>

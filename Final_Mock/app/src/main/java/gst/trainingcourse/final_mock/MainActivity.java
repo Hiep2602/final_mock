@@ -15,6 +15,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import gst.trainingcourse.final_mock.adapter.PageAdapter;
@@ -34,6 +37,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initView();
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkPermision(MainActivity.this);
     }
 
     private void initView() {
@@ -74,6 +83,9 @@ public class MainActivity extends AppCompatActivity {
                     getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this,
                             R.color.colorAccent));
                 }
+                // o lam cai tab may y nhi
+                // tab 2
+
             } else if (tab.getPosition() == 2) {
 
 
@@ -122,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private boolean checkPermision(Context context) {
+    public boolean checkPermision(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -161,5 +173,14 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu,menu);
+//        return true;
+//    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
 }

@@ -29,25 +29,25 @@
             android:id="@+id/tabChats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="APPS" />
+            android:text="@string/category_app" />
 
         <android.support.design.widget.TabItem
             android:id="@+id/tabStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Music" />
+            android:text="@string/category_music" />
 
         <android.support.design.widget.TabItem
             android:id="@+id/tabCalls"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Photo" />
+            android:text="@string/category_photo" />
 
         <android.support.design.widget.TabItem
             android:id="@+id/tabPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Video" />
+            android:text="@string/category_video" />
 
     </android.support.design.widget.TabLayout>
 
