@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getString(R.string.app_name));
         setSupportActionBar(toolbar);
-
         mTabLayout = findViewById(R.id.tablayout);
         tabChats = findViewById(R.id.tabChats);
         tabStatus = findViewById(R.id.tabStatus);
@@ -173,11 +172,11 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu,menu);
-//        return true;
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

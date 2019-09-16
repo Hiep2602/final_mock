@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -16,23 +18,47 @@ import java.util.ArrayList;
 import gst.trainingcourse.final_mock.R;
 import gst.trainingcourse.final_mock.models.ItemMusic;
 
-public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder> {
-    private ArrayList<ItemMusic> mMusics = new ArrayList<>();
+public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder> implements Filterable {
+    private ArrayList<ItemMusic> mMusics;
 
     private ArrayList<ItemMusic> mMusicsFull;
 
     private Context mContext;
 
-    public MusicAdapter(Context context) {
+    private Filter mMusicFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            ArrayList<ItemMusic> filterItemMusics = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0) {
+                filterItemMusics.addAll(mMusicsFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (ItemMusic item : mMusicsFull) {
+                    if (item.getNameSong().toLowerCase().trim().contains(filterPattern)) {
+                        filterItemMusics.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filterItemMusics;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            mMusics.clear();
+            mMusics.addAll((ArrayList<ItemMusic>) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
+    public MusicAdapter(Context context, ArrayList<ItemMusic> itemMusics) {
         mContext = context;
+        mMusics = itemMusics;
+        mMusicsFull = new ArrayList<>(mMusics);
     }
 
-    public void setData(ArrayList<ItemMusic> data) {
-
-        mMusics.addAll(data);
-
-        notifyDataSetChanged();
-    }
 
     @NonNull
     @Override
@@ -59,6 +85,11 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
         } else {
             return 0;
         }
+    }
+
+    @Override
+    public Filter getFilter() {
+        return mMusicFilter;
     }
 
     static class MusicHolder extends RecyclerView.ViewHolder {

@@ -6,11 +6,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -42,14 +45,11 @@ public class MusicFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         return Objects.requireNonNull(inflater).inflate(R.layout.music_fragment, container, false);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
 
-    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -59,8 +59,8 @@ public class MusicFragment extends Fragment {
         if (Objects.requireNonNull(m).checkPermision(getContext())) {
             MusicPresenter mMusicPresenter = new MusicPresenter(musicUi);
             mMusicPresenter.parseAllMusic(Objects.requireNonNull(getContext()));
-            mMusicAdapter = new MusicAdapter(getActivity());
-            mMusicAdapter.setData(mItemMusics);
+            mMusicAdapter = new MusicAdapter(getActivity(),mItemMusics);
+
         }
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -69,7 +69,23 @@ public class MusicFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        SearchView searchMusic = (SearchView) menuItem.getActionView();
+        searchMusic.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        searchMusic.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mMusicAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
         super.onCreateOptionsMenu(menu, inflater);
     }
+
+
 }
