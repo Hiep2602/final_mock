@@ -28,7 +28,6 @@ import gst.trainingcourse.final_mock.adapter.AppInfoAdapter;
 import gst.trainingcourse.final_mock.utils.OnItemClick;
 
 
-
 public class AppFragment extends BaseFragment implements OnItemClick {
     private List<AppInfo> mAppInfos;
     private AppInfoAdapter adapter;
@@ -73,11 +72,16 @@ public class AppFragment extends BaseFragment implements OnItemClick {
         SharePK(position);
     }
 
+    @Override
+    public void onITemOnLongClick(View view, Object T, int position) {
+
+    }
+
     public void SharePK(int position) {
         try {
             Intent share = new Intent();
             share.setAction(Intent.ACTION_SEND);
-            share.setType("application/vnd.android.package-archive");
+            share.setType("*/*");
             share.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getContext(),
                     BuildConfig.APPLICATION_ID + ".provider", new File(mAppInfos.get(position).getFilePathApk())));
             getContext().startActivity(share);
