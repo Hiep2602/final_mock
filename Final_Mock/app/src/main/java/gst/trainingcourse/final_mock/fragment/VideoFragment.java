@@ -1,25 +1,29 @@
 package gst.trainingcourse.final_mock.fragment;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.pm.PackageManager;
-import android.os.Build;
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
+
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import gst.trainingcourse.final_mock.ITemVideo;
+import gst.trainingcourse.final_mock.MainActivity;
 import gst.trainingcourse.final_mock.R;
+import gst.trainingcourse.final_mock.adapter.VideoAdapter;
 
 public class VideoFragment extends BaseFragment {
+    private RecyclerView rvVideo;
+    private List<ITemVideo> mListVideos;
 
     @Nullable
     @Override
@@ -30,5 +34,26 @@ public class VideoFragment extends BaseFragment {
 
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        try {
 
+
+            if (checkPermision(getContext())) {
+                ITemVideo mItemVideo = new ITemVideo();
+                mItemVideo.parseAllVideo(getContext());
+                mListVideos = new ArrayList<>();
+                mListVideos.add(mItemVideo);
+                Toast.makeText(getContext(), checkPermision(getContext()) + " " + mListVideos.size(), Toast.LENGTH_SHORT).show();
+                VideoAdapter adapter = new VideoAdapter();
+                adapter.setData(mListVideos);
+                rvVideo = view.findViewById(R.id.rv_video);
+                rvVideo.setLayoutManager(new LinearLayoutManager(getContext()));
+                rvVideo.setAdapter(adapter);
+            }
+        } catch (NullPointerException e) {
+            Log.d("null", "onViewCreated: ");
+        }
+    }
 }

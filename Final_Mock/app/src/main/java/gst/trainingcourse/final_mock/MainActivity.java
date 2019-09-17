@@ -2,8 +2,13 @@ package gst.trainingcourse.final_mock;
 
 import android.Manifest;
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.design.widget.TabItem;
@@ -15,17 +20,19 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import gst.trainingcourse.final_mock.adapter.PageAdapter;
 
 
 public class MainActivity extends AppCompatActivity {
-    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
     private Toolbar toolbar;
     private TabLayout mTabLayout;
     private ViewPager mViewpager;
     private PageAdapter adapter;
+    private BluetoothAdapter bluetoothAdapter;
     private TabItem tabChats, tabStatus, tabCalls, tabPhoto;
 
     @Override
@@ -34,6 +41,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initView();
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkPermision(MainActivity.this);
     }
 
     private void initView() {
@@ -61,11 +74,7 @@ public class MainActivity extends AppCompatActivity {
         public void onTabSelected(TabLayout.Tab tab) {
             mViewpager.setCurrentItem(tab.getPosition());
             if (tab.getPosition() == 1) {
-                if (checkPermision(MainActivity.this)) {
-                    Toast.makeText(getApplicationContext(), checkPermision(MainActivity.this) + "", Toast.LENGTH_SHORT).show();
-                    ITemVideo mItemVideo = new ITemVideo();
-                    mItemVideo.parseAllVideo(MainActivity.this);
-                }
+
                 toolbar.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
                         R.color.colorAccent));
                 mTabLayout.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
@@ -85,10 +94,6 @@ public class MainActivity extends AppCompatActivity {
                     getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this,
                             android.R.color.darker_gray));
                 } else if (tab.getPosition() == 3) {
-                    if (checkPermision(MainActivity.this)) {
-                        Toast.makeText(getApplicationContext(), checkPermision(MainActivity.this) + "", Toast.LENGTH_SHORT).show();
-                    }
-
                     toolbar.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
                             android.R.color.darker_gray));
                     mTabLayout.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
@@ -122,7 +127,43 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private boolean checkPermision(Context context) {
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_search:
+                openBlueTooth();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
+    private void openBlueTooth() {
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (bluetoothAdapter == null) {
+            Toast.makeText(MainActivity.this, "Device doesn't support bluetooth", Toast.LENGTH_SHORT).show();
+        } else if (!bluetoothAdapter.isEnabled()) {
+            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(intent, 0);
+            IntentFilter intentFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+            registerReceiver(mBroadcastReciver, intentFilter);
+
+
+        }
+
+    }
+
+    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
+
+    public boolean checkPermision(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -161,5 +202,22 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 
+    private final BroadcastReceiver mBroadcastReciver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                String deviceName = device.getName();
+                String address = device.getAddress();
+                Toast.makeText(MainActivity.this, deviceName + "\t" + address, Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
 
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(mBroadcastReciver);
+        super.onDestroy();
+    }
 }
