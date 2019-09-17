@@ -39,6 +39,7 @@ public class AppFragment extends BaseFragment {
         adapter.setData(mAppInfos);
         rvAppInfo.setLayoutManager(new GridLayoutManager(getContext(), 3));
         rvAppInfo.setAdapter(adapter);
+
     }
 
     private void initData() {
