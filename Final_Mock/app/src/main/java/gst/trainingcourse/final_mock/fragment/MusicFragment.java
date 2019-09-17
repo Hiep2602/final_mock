@@ -69,6 +69,7 @@ public class MusicFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu,menu);
         MenuItem menuItem = menu.findItem(R.id.action_search);
         SearchView searchMusic = (SearchView) menuItem.getActionView();
         searchMusic.setImeOptions(EditorInfo.IME_ACTION_DONE);

@@ -9,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -17,10 +19,8 @@ import java.util.Objects;
 
 import gst.trainingcourse.final_mock.MainActivity;
 import gst.trainingcourse.final_mock.R;
-import gst.trainingcourse.final_mock.adapter.MusicAdapter;
 import gst.trainingcourse.final_mock.adapter.PhotoAdapter;
 import gst.trainingcourse.final_mock.models.ItemPhoto;
-import gst.trainingcourse.final_mock.presenter.MusicPresenter;
 import gst.trainingcourse.final_mock.presenter.PhotoPresenter;
 
 public class PhotoFragment extends Fragment {
@@ -49,6 +49,7 @@ public class PhotoFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         return Objects.requireNonNull(inflater).inflate(R.layout.photo_fragment, container, false);
     }
 
@@ -69,8 +70,7 @@ public class PhotoFragment extends Fragment {
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-
-        super.onCreateContextMenu(menu, v, menuInfo);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_photo, menu);
     }
 }

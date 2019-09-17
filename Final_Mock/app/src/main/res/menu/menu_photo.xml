@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/photo_bluetooth_on"
+        android:icon="@drawable/ic_bluetooth_disabled_black_24dp"
+        android:title="@string/bluetooth_on"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/photo_bluetooth_off"
+        android:icon="@drawable/ic_bluetooth_black_24dp"
+        android:title="@string/bluetooth_off"
+        app:showAsAction="ifRoom"/>
+</menu>

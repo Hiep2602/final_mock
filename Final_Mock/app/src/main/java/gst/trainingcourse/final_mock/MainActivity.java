@@ -82,9 +82,6 @@ public class MainActivity extends AppCompatActivity {
                     getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this,
                             R.color.colorAccent));
                 }
-                // o lam cai tab may y nhi
-                // tab 2
-
             } else if (tab.getPosition() == 2) {
 
 
@@ -172,11 +169,7 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
