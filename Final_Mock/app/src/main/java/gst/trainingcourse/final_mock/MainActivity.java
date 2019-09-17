@@ -2,13 +2,8 @@ package gst.trainingcourse.final_mock;
 
 import android.Manifest;
 import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.design.widget.TabItem;
@@ -23,16 +18,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import gst.trainingcourse.final_mock.adapter.PageAdapter;
 
 
 public class MainActivity extends AppCompatActivity {
+    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
     private Toolbar toolbar;
     private TabLayout mTabLayout;
     private ViewPager mViewpager;
     private PageAdapter adapter;
+    FloatingActionButton fab;
     private BluetoothAdapter bluetoothAdapter;
     private TabItem tabChats, tabStatus, tabCalls, tabPhoto;
 
@@ -60,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
         tabCalls = findViewById(R.id.tabCalls);
         tabPhoto = findViewById(R.id.tabPhoto);
         mViewpager = findViewById(R.id.viewPager);
-
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(mFloatBut);
         adapter = new PageAdapter(getSupportFragmentManager(), mTabLayout.getTabCount(), MainActivity.this);
         mViewpager.setAdapter(adapter);
         mTabLayout.addOnTabSelectedListener(mOnTabSelect);
@@ -69,12 +68,24 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private final View.OnClickListener mFloatBut = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Snackbar.make(v, "Here's a Snackbar", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
+    };
+
     private TabLayout.OnTabSelectedListener mOnTabSelect = new TabLayout.OnTabSelectedListener() {
         @Override
         public void onTabSelected(TabLayout.Tab tab) {
             mViewpager.setCurrentItem(tab.getPosition());
             if (tab.getPosition() == 1) {
-
+                if (checkPermision(MainActivity.this)) {
+                    Toast.makeText(getApplicationContext(), checkPermision(MainActivity.this) + "", Toast.LENGTH_SHORT).show();
+                    ITemVideo mItemVideo = new ITemVideo();
+                    mItemVideo.parseAllVideo(MainActivity.this);
+                }
                 toolbar.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
                         R.color.colorAccent));
                 mTabLayout.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
@@ -94,6 +105,10 @@ public class MainActivity extends AppCompatActivity {
                     getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this,
                             android.R.color.darker_gray));
                 } else if (tab.getPosition() == 3) {
+                    if (checkPermision(MainActivity.this)) {
+                        Toast.makeText(getApplicationContext(), checkPermision(MainActivity.this) + "", Toast.LENGTH_SHORT).show();
+                    }
+
                     toolbar.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
                             android.R.color.darker_gray));
                     mTabLayout.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
@@ -216,8 +231,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     @Override
-    protected void onDestroy() {
-        unregisterReceiver(mBroadcastReciver);
-        super.onDestroy();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 }

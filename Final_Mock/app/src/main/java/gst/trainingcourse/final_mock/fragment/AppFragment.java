@@ -1,31 +1,23 @@
 package gst.trainingcourse.final_mock.fragment;
 
-
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import gst.trainingcourse.final_mock.AppInfo;
-import gst.trainingcourse.final_mock.BuildConfig;
 import gst.trainingcourse.final_mock.R;
 import gst.trainingcourse.final_mock.adapter.AppInfoAdapter;
-import gst.trainingcourse.final_mock.utils.OnItemClick;
 
 
 public class AppFragment extends BaseFragment implements OnItemClick {
@@ -50,8 +42,6 @@ public class AppFragment extends BaseFragment implements OnItemClick {
         rvAppInfo.setLayoutManager(new GridLayoutManager(getContext(), 3));
         adapter.setOnItemClick(this);
         rvAppInfo.setAdapter(adapter);
-
-
     }
 
     private void initData() {
@@ -62,7 +52,6 @@ public class AppFragment extends BaseFragment implements OnItemClick {
                 mAppInfos.add(new AppInfo(mInfo.publicSourceDir, mInfo.loadLabel(getContext().getPackageManager()).toString(), mInfo.packageName, mInfo.loadIcon(getContext().getPackageManager())));
             }
         }
-
     }
 
 

@@ -11,6 +11,7 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -72,5 +73,18 @@ public class PhotoFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_photo, menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.photo_bluetooth_on:
+
+                break;
+            case R.id.photo_bluetooth_off:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

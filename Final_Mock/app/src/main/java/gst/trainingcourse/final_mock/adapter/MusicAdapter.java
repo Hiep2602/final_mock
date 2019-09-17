@@ -9,12 +9,15 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import gst.trainingcourse.final_mock.R;
 import gst.trainingcourse.final_mock.models.ItemMusic;
 
@@ -93,7 +96,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
     }
 
     static class MusicHolder extends RecyclerView.ViewHolder {
-        private ImageButton mImageMusic;
+        private ImageView mImageMusic;
 
         private TextView mTvName, mTvAuthor, mTvSize;
 
