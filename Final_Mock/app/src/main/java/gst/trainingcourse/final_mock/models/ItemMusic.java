@@ -19,6 +19,9 @@ public class ItemMusic {
 
     private int duration;
 
+    public ItemMusic() {
+    }
+
     public ItemMusic(String author, String nameSong, String pathImage, int duration) {
         this.author = author;
         this.nameSong = nameSong;

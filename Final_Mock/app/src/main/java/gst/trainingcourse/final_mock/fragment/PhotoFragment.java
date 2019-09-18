@@ -1,12 +1,16 @@
 package gst.trainingcourse.final_mock.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,16 +19,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import gst.trainingcourse.final_mock.BuildConfig;
 import gst.trainingcourse.final_mock.MainActivity;
 import gst.trainingcourse.final_mock.R;
 import gst.trainingcourse.final_mock.adapter.PhotoAdapter;
 import gst.trainingcourse.final_mock.models.ItemPhoto;
 import gst.trainingcourse.final_mock.presenter.PhotoPresenter;
 
-public class PhotoFragment extends Fragment {
+public class PhotoFragment extends Fragment implements PhotoAdapter.OnClickImage {
     private ArrayList<ItemPhoto> mItemPhotos = new ArrayList<>();
 
     private PhotoAdapter mPhotoAdapter;
@@ -62,7 +68,7 @@ public class PhotoFragment extends Fragment {
         if (Objects.requireNonNull(m).checkPermision(getContext())) {
             mPhotoPresenter = new PhotoPresenter(mPhotoUi);
             mPhotoPresenter.parseAllImages(getActivity());
-            mPhotoAdapter = new PhotoAdapter(getActivity(), mItemPhotos);
+            mPhotoAdapter = new PhotoAdapter(getActivity(), mItemPhotos, this);
 
         }
 
@@ -78,7 +84,7 @@ public class PhotoFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.photo_bluetooth_on:
 
                 break;
@@ -86,5 +92,32 @@ public class PhotoFragment extends Fragment {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClickImage(int position) {
+//        SharePK(position);
+        openImage(position);
+    }
+
+    public void SharePK(int position) {
+        try {
+            Intent share = new Intent();
+            share.setAction(Intent.ACTION_SEND);
+            share.setType("*/*");
+            share.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getContext(),
+                    BuildConfig.APPLICATION_ID + ".provider", new File(mItemPhotos.get(position).getPathImage())));
+            getContext().startActivity(share);
+        } catch (Exception e) {
+            Log.e("ShareApp", e.getMessage());
+        }
+
+    }
+
+    private void openImage(int position) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri data = Uri.parse(mItemPhotos.get(position).getPathImage());
+        intent.setDataAndType(data, "image/*");
+        getContext().startActivity(intent);
     }
 }

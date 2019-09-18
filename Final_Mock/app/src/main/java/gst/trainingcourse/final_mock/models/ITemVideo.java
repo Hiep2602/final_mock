@@ -1,8 +1,7 @@
-package gst.trainingcourse.final_mock;
+package gst.trainingcourse.final_mock.models;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -10,17 +9,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ITemVideo {
-    private String fileName, filePath, fileType;
-    private List<ITemVideo> mItemVideos = new ArrayList<>();
+    private String fileName, filePath, fileVideo;
+    private String duration;
 
-    public ITemVideo(String fileName, String filePath, String fileType) {
+    public ITemVideo(String fileName, String filePath) {
         this.fileName = fileName;
         this.filePath = filePath;
-        this.fileType = fileType;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 
     public ITemVideo() {
 
+    }
+
+    public String getFileVideo() {
+        return fileVideo;
+    }
+
+    public void setFileVideo(String fileVideo) {
+        this.fileVideo = fileVideo;
     }
 
     public String getFileName() {
@@ -39,19 +53,11 @@ public class ITemVideo {
         this.filePath = filePath;
     }
 
-    public String getFileType() {
-        return fileType;
-    }
-
-    public void setFileType(String fileType) {
-        this.fileType = fileType;
-    }
-
-    public void parseAllVideo(Context context) {
+    public List<ITemVideo> parseAllVideo(Context context) {
+        List<ITemVideo> mItemVideos = null;
         try {
-            String name = null;
-            String[] thumbColumns = {MediaStore.Video.Thumbnails.DATA,
-                    MediaStore.Video.Thumbnails.VIDEO_ID};
+            mItemVideos = new ArrayList<>();
+            String name, pathVideo;
 
             int video_column_index;
             String[] proj = {MediaStore.Video.Media._ID,
@@ -63,22 +69,23 @@ public class ITemVideo {
             int count = videocursor.getCount();
             Log.d("No of video", "" + count);
             for (int i = 0; i < count; i++) {
-                ITemVideo mediaFileInfo = new ITemVideo();
+                ITemVideo iTemVideo = new ITemVideo();
                 video_column_index = videocursor
                         .getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME);
                 videocursor.moveToPosition(i);
+                pathVideo = videocursor.getString(videocursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
                 name = videocursor.getString(video_column_index);
-
-                mediaFileInfo.setFileName(name);
+                iTemVideo.setFileName(name);
 
                 int column_index = videocursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 videocursor.moveToPosition(i);
                 String filepath = videocursor.getString(column_index);
+                iTemVideo.setFilePath(filepath);
+                iTemVideo.setFileVideo(pathVideo);
+                iTemVideo.setDuration(duration);
 
-                mediaFileInfo.setFilePath(filepath);
-                mediaFileInfo.setFileType("video");
-                mItemVideos.add(mediaFileInfo);
-                // id += " Size(KB):" +
+                mItemVideos.add(iTemVideo);
+
                 // videocursor.getString(video_column_index);
 
 
@@ -88,5 +95,6 @@ public class ITemVideo {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return mItemVideos;
     }
 }
