@@ -1,38 +1,32 @@
 package gst.trainingcourse.final_mock.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.MediaMetadataRetriever;
-import android.media.ThumbnailUtils;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.RelativeLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import gst.trainingcourse.final_mock.R;
 import gst.trainingcourse.final_mock.models.ItemMusic;
-import gst.trainingcourse.final_mock.utils.OnItemClick;
 
 public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder> implements Filterable {
     private ArrayList<ItemMusic> mMusics;
 
     private ArrayList<ItemMusic> mMusicsFull;
-    private SparseBooleanArray selected_items;
-    private int current_selected_idx = -1;
+
     private Context mContext;
-    private OnItemClick itemClick;
 
     private Filter mMusicFilter = new Filter() {
         @Override
@@ -62,12 +56,10 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
         }
     };
 
-    public MusicAdapter(Context context, ArrayList<ItemMusic> itemMusics, OnItemClick onItemClick) {
+    public MusicAdapter(Context context, ArrayList<ItemMusic> itemMusics) {
         mContext = context;
         mMusics = itemMusics;
         mMusicsFull = new ArrayList<>(mMusics);
-        selected_items = new SparseBooleanArray();
-        itemClick = onItemClick;
     }
 
 
@@ -75,73 +67,18 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
     @Override
     public MusicHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.item_music, viewGroup, false);
+                .inflate(R.layout.music_row_item, viewGroup, false);
         return new MusicHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MusicHolder musicHolder, int position) {
-        ItemMusic music = mMusics.get(position);
+    public void onBindViewHolder(@NonNull MusicHolder musicHolder, int i) {
+        ItemMusic music = mMusics.get(i);
         musicHolder.mTvName.setText(music.getNameSong());
         musicHolder.mTvAuthor.setText(music.getAuthor());
-        Log.d("music", "onBindViewHolder: " + music.getNameSong());
-//        toggleCheckedIcon(musicHolder, i);
-        displayImage(musicHolder, music);
-        musicHolder.itemView.setOnClickListener(v -> {
-            itemClick.onItemClick(position);
-        });
+        musicHolder.mTvSize.setText(String.valueOf(music.getDuration()));
+        Glide.with(mContext).load(music.getPathImage()).into(musicHolder.mImageMusic);
 
-    }
-
-    private void toggleCheckedIcon(MusicHolder holder, int position) {
-        if (selected_items.get(position, false)) {
-            holder.lyt_image.setVisibility(View.GONE);
-            holder.lyt_checked.setVisibility(View.VISIBLE);
-            if (current_selected_idx == position) resetCurrentIndex();
-        } else {
-            holder.lyt_checked.setVisibility(View.GONE);
-            holder.lyt_image.setVisibility(View.VISIBLE);
-            if (current_selected_idx == position) resetCurrentIndex();
-        }
-    }
-
-    private void displayImage(MusicHolder holder, ItemMusic music) {
-
-        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-        if (music.getPathImage() != null) {
-            mmr.setDataSource(music.getPathImage());
-            try {
-                if (mmr != null) {
-                    byte[] art = mmr.getEmbeddedPicture();
-                    Bitmap bmp = BitmapFactory.decodeByteArray(art, 0, art.length);
-                    if (bmp != null) {
-                        bmp = ThumbnailUtils.extractThumbnail(bmp, 80, 50);
-                        holder.mImageMusic.setImageBitmap(bmp);
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void toggleSelection(int pos) {
-        current_selected_idx = pos;
-        if (selected_items.get(pos, false)) {
-            selected_items.delete(pos);
-        } else {
-            selected_items.put(pos, true);
-        }
-        notifyItemChanged(pos);
-    }
-
-    public void clearSelections() {
-        selected_items.clear();
-        notifyDataSetChanged();
-    }
-
-    public int getSelectedItemCount() {
-        return selected_items.size();
     }
 
     @Override
@@ -159,20 +96,16 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
     }
 
     static class MusicHolder extends RecyclerView.ViewHolder {
-        private CircularImageView mImageMusic;
-        public RelativeLayout lyt_checked, lyt_image;
+        private ImageView mImageMusic;
 
-        private TextView mTvName, mTvAuthor;
+        private TextView mTvName, mTvAuthor, mTvSize;
 
-        MusicHolder(@NonNull View view) {
-            super(view);
-            mImageMusic = view.findViewById(R.id.imv_arrtist);
-            mTvName = view.findViewById(R.id.tvnamesong);
-            mTvAuthor = view.findViewById(R.id.tvnamearrtist);
+        MusicHolder(@NonNull View itemView) {
+            super(itemView);
+            mImageMusic = itemView.findViewById(R.id.img_music);
+            mTvName = itemView.findViewById(R.id.tv_music_name);
+            mTvAuthor = itemView.findViewById(R.id.tv_music_author);
+            mTvSize = itemView.findViewById(R.id.tv_music_size);
         }
-    }
-
-    private void resetCurrentIndex() {
-        current_selected_idx = -1;
     }
 }

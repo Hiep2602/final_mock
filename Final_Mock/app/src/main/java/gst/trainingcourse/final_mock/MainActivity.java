@@ -1,6 +1,7 @@
 package gst.trainingcourse.final_mock;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -11,9 +12,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
@@ -24,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -87,6 +86,55 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onTabSelected(TabLayout.Tab tab) {
             mViewpager.setCurrentItem(tab.getPosition());
+            if (tab.getPosition() == 1) {
+                if (checkPermision(MainActivity.this)) {
+                    Toast.makeText(getApplicationContext(), checkPermision(MainActivity.this) + "", Toast.LENGTH_SHORT).show();
+                    ITemVideo mItemVideo = new ITemVideo();
+                    mItemVideo.parseAllVideo(MainActivity.this);
+                }
+                toolbar.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
+                        R.color.colorAccent));
+                mTabLayout.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
+                        R.color.colorAccent));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this,
+                            R.color.colorAccent));
+                }
+            } else if (tab.getPosition() == 2) {
+
+
+                toolbar.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
+                        android.R.color.darker_gray));
+                mTabLayout.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
+                        android.R.color.darker_gray));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this,
+                            android.R.color.darker_gray));
+                } else if (tab.getPosition() == 3) {
+                    if (checkPermision(MainActivity.this)) {
+                        Toast.makeText(getApplicationContext(), checkPermision(MainActivity.this) + "", Toast.LENGTH_SHORT).show();
+                    }
+
+                    toolbar.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
+                            android.R.color.darker_gray));
+                    mTabLayout.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
+                            android.R.color.darker_gray));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this,
+                                android.R.color.darker_gray));
+                    }
+                }
+
+            } else {
+                toolbar.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
+                        R.color.colorPrimary));
+                mTabLayout.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
+                        R.color.colorPrimary));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this,
+                            R.color.colorPrimaryDark));
+                }
+            }
         }
 
         @Override
@@ -120,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.ECLAIR)
     private void openBlueTooth() {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (bluetoothAdapter == null) {
@@ -189,4 +236,8 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
 }

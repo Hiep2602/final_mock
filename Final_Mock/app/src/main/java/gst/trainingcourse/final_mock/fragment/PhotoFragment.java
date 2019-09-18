@@ -1,16 +1,12 @@
 package gst.trainingcourse.final_mock.fragment;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,11 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import gst.trainingcourse.final_mock.BuildConfig;
 import gst.trainingcourse.final_mock.MainActivity;
 import gst.trainingcourse.final_mock.R;
 import gst.trainingcourse.final_mock.adapter.PhotoAdapter;
@@ -39,13 +33,11 @@ public class PhotoFragment extends Fragment implements PhotoAdapter.OnClickImage
 
     private PhotoPresenter mPhotoPresenter;
 
-    private PhotoPresenter.PhotoUi mPhotoUi = new PhotoPresenter.PhotoUi() {
-        @Override
-        public void photoData(ArrayList<ItemPhoto> itemPhotos) {
-            if (mItemPhotos != null) {
-                mItemPhotos.clear();
-                mItemPhotos.addAll(itemPhotos);
-            }
+    private PhotoPresenter.PhotoUi mPhotoUi = itemPhotos -> {
+        if (mItemPhotos != null) {
+            mItemPhotos.clear();
+            mItemPhotos.addAll(itemPhotos);
+            mPhotoAdapter.notifyDataSetChanged();
         }
     };
 
@@ -84,7 +76,7 @@ public class PhotoFragment extends Fragment implements PhotoAdapter.OnClickImage
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+        switch (item.getItemId()){
             case R.id.photo_bluetooth_on:
 
                 break;
