@@ -1,8 +1,13 @@
 package gst.trainingcourse.final_mock.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
+import android.media.ThumbnailUtils;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +15,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -17,7 +23,6 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.ArrayList;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import gst.trainingcourse.final_mock.R;
 import gst.trainingcourse.final_mock.models.ItemMusic;
 
@@ -67,19 +72,44 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
     @Override
     public MusicHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.music_row_item, viewGroup, false);
+                .inflate(R.layout.item_music, viewGroup, false);
         return new MusicHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MusicHolder musicHolder, int i) {
-        ItemMusic music = mMusics.get(i);
+    public void onBindViewHolder(@NonNull MusicHolder musicHolder, int position) {
+        ItemMusic music = mMusics.get(position);
         musicHolder.mTvName.setText(music.getNameSong());
         musicHolder.mTvAuthor.setText(music.getAuthor());
-        musicHolder.mTvSize.setText(String.valueOf(music.getDuration()));
-        Glide.with(mContext).load(music.getPathImage()).into(musicHolder.mImageMusic);
+        Log.d("music", "onBindViewHolder: " + music.getNameSong());
+//        toggleCheckedIcon(musicHolder, i);
+        displayImage(musicHolder, music);
 
     }
+
+
+
+    private void displayImage(MusicHolder holder, ItemMusic music) {
+
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        if (music.getPathImage() != null) {
+            mmr.setDataSource(music.getPathImage());
+            try {
+                if (mmr != null) {
+                    byte[] art = mmr.getEmbeddedPicture();
+                    Bitmap bmp = BitmapFactory.decodeByteArray(art, 0, art.length);
+                    if (bmp != null) {
+                        bmp = ThumbnailUtils.extractThumbnail(bmp, 80, 50);
+                        holder.mImageMusic.setImageBitmap(bmp);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 
     @Override
     public int getItemCount() {
@@ -96,16 +126,16 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
     }
 
     static class MusicHolder extends RecyclerView.ViewHolder {
-        private ImageView mImageMusic;
+        private CircularImageView mImageMusic;
+        public RelativeLayout lyt_checked, lyt_image;
 
-        private TextView mTvName, mTvAuthor, mTvSize;
+        private TextView mTvName, mTvAuthor;
 
-        MusicHolder(@NonNull View itemView) {
-            super(itemView);
-            mImageMusic = itemView.findViewById(R.id.img_music);
-            mTvName = itemView.findViewById(R.id.tv_music_name);
-            mTvAuthor = itemView.findViewById(R.id.tv_music_author);
-            mTvSize = itemView.findViewById(R.id.tv_music_size);
+        MusicHolder(@NonNull View view) {
+            super(view);
+            mImageMusic = view.findViewById(R.id.imv_arrtist);
+            mTvName = view.findViewById(R.id.tvnamesong);
+            mTvAuthor = view.findViewById(R.id.tvnamearrtist);
         }
     }
 }
