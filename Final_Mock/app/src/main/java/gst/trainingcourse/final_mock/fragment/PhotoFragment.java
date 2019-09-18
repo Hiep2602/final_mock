@@ -1,13 +1,16 @@
 package gst.trainingcourse.final_mock.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextMenu;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,9 +18,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import gst.trainingcourse.final_mock.BuildConfig;
 import gst.trainingcourse.final_mock.MainActivity;
 import gst.trainingcourse.final_mock.R;
 import gst.trainingcourse.final_mock.adapter.PhotoAdapter;
@@ -58,8 +63,8 @@ public class PhotoFragment extends Fragment implements PhotoAdapter.OnClickImage
         mRvPhoto = view.findViewById(R.id.rv_photo);
         MainActivity m = (MainActivity) getActivity();
         if (Objects.requireNonNull(m).checkPermision(getContext())) {
-            mPhotoPresenter = new PhotoPresenter(mPhotoUi);
-            mPhotoPresenter.parseAllImages(getActivity());
+            mPhotoPresenter = new PhotoPresenter();
+            mPhotoPresenter.parseAllImages(getActivity(),mPhotoUi);
             mPhotoAdapter = new PhotoAdapter(getActivity(), mItemPhotos, this);
 
         }

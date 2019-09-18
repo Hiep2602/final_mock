@@ -60,7 +60,7 @@ public class MusicFragment extends Fragment {
         }
         MusicPresenter mMusicPresenter = new MusicPresenter(musicUi);
         mMusicPresenter.parseAllAudio(Objects.requireNonNull(getContext()));
-        mMusicAdapter = new MusicAdapter(getContext(), mItemMusics, this);
+        mMusicAdapter = new MusicAdapter(getContext(), mItemMusics);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(mMusicAdapter);

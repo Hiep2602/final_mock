@@ -7,7 +7,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import gst.trainingcourse.final_mock.ITemVideo;
+import gst.trainingcourse.final_mock.models.ITemVideo;
 
 
 public class VideoPresenter {
@@ -19,7 +19,7 @@ public class VideoPresenter {
 
     public void parseAllVideo(Context context) {
         try {
-            ArrayList<ITemVideo> itemVideos = new ArrayList<>();;
+            ArrayList<ITemVideo> itemVideos = new ArrayList<>();
             String name ;
             String[] thumbColumns = {MediaStore.Video.Thumbnails.DATA,
                     MediaStore.Video.Thumbnails.VIDEO_ID};
@@ -50,7 +50,6 @@ public class VideoPresenter {
                 String filepath = videoCursor.getString(column_index);
 
                 mediaFileInfo.setFilePath(filepath);
-                mediaFileInfo.setFileType("video");
                 itemVideos.add(mediaFileInfo);
                 mVideoUi.videoData(itemVideos);
                 Log.d("video", "parseAllVideo: "+itemVideos.size());
