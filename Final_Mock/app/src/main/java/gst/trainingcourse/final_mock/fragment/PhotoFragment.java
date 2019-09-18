@@ -33,13 +33,11 @@ public class PhotoFragment extends Fragment {
 
     private PhotoPresenter mPhotoPresenter;
 
-    private PhotoPresenter.PhotoUi mPhotoUi = new PhotoPresenter.PhotoUi() {
-        @Override
-        public void photoData(ArrayList<ItemPhoto> itemPhotos) {
-            if (mItemPhotos != null) {
-                mItemPhotos.clear();
-                mItemPhotos.addAll(itemPhotos);
-            }
+    private PhotoPresenter.PhotoUi mPhotoUi = itemPhotos -> {
+        if (mItemPhotos != null) {
+            mItemPhotos.clear();
+            mItemPhotos.addAll(itemPhotos);
+            mPhotoAdapter.notifyDataSetChanged();
         }
     };
 
@@ -60,10 +58,9 @@ public class PhotoFragment extends Fragment {
         mRvPhoto = view.findViewById(R.id.rv_photo);
         MainActivity m = (MainActivity) getActivity();
         if (Objects.requireNonNull(m).checkPermision(getContext())) {
-            mPhotoPresenter = new PhotoPresenter(mPhotoUi);
-            mPhotoPresenter.parseAllImages(getActivity());
+            mPhotoPresenter = new PhotoPresenter();
+            mPhotoPresenter.parseAllImages(getActivity(), mPhotoUi);
             mPhotoAdapter = new PhotoAdapter(getActivity(), mItemPhotos);
-
         }
 
         mRvPhoto.setLayoutManager(new GridLayoutManager(getContext(), 3, LinearLayoutManager.VERTICAL, false));
@@ -81,7 +78,7 @@ public class PhotoFragment extends Fragment {
         switch (item.getItemId()){
             case R.id.photo_bluetooth_on:
 
-                break;
+
             case R.id.photo_bluetooth_off:
                 break;
         }

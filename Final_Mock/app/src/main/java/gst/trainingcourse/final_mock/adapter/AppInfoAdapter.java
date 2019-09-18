@@ -25,6 +25,7 @@ public class AppInfoAdapter extends BaseRecycleAdapter<AppInfo> {
         AppInfoHoder hoder = (AppInfoHoder) holder;
         hoder.mTvNameApp.setText(model.getLabel());
         hoder.mImvApp.setImageDrawable(model.getIcon());
+
     }
 
     private static class AppInfoHoder extends BaseViewHolder {

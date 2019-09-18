@@ -1,19 +1,32 @@
 package gst.trainingcourse.final_mock;
 
 import android.graphics.drawable.Drawable;
+import android.os.Parcel;
 
-public class AppInfo {
+import java.io.File;
+
+
+public class AppInfo{
+    private String filePathApk;
     private CharSequence label;
     private CharSequence packageName;
-    private long installTime;
     private Drawable icon;
 
-
-    public AppInfo(CharSequence label, CharSequence packageName, long installTime, Drawable icon) {
+    public AppInfo(String filePathApk, CharSequence label, CharSequence packageName, Drawable icon) {
+        this.filePathApk = filePathApk;
         this.label = label;
         this.packageName = packageName;
-        this.installTime = installTime;
         this.icon = icon;
+    }
+
+
+
+    public String getFilePathApk() {
+        return filePathApk;
+    }
+
+    public void setFilePathApk(String filePathApk) {
+        this.filePathApk = filePathApk;
     }
 
     public Drawable getIcon() {
@@ -40,15 +53,6 @@ public class AppInfo {
         this.packageName = packageName;
     }
 
-    public long getInstallTime() {
-        return installTime;
-    }
-
-    public void setInstallTime(long installTime) {
-        this.installTime = installTime;
-    }
-
-
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof AppInfo) {
@@ -58,5 +62,4 @@ public class AppInfo {
         }
         return false;
     }
-
 }
