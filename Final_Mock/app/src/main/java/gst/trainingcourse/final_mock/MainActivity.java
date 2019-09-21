@@ -1,7 +1,6 @@
 package gst.trainingcourse.final_mock;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -14,7 +13,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
@@ -25,9 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import gst.trainingcourse.final_mock.adapter.PageAdapter;
@@ -39,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout mTabLayout;
     private ViewPager mViewpager;
     private PageAdapter adapter;
-    FloatingActionButton fab;
+    private FloatingActionButton fab;
     private BluetoothAdapter bluetoothAdapter;
     private TabItem tabChats, tabStatus, tabCalls, tabPhoto;
 
@@ -68,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         tabPhoto = findViewById(R.id.tabPhoto);
         mViewpager = findViewById(R.id.viewPager);
         fab = findViewById(R.id.fab);
-        fab.setOnClickListener(mFloatBut);
         adapter = new PageAdapter(getSupportFragmentManager(), mTabLayout.getTabCount(), MainActivity.this);
         mViewpager.setAdapter(adapter);
         mTabLayout.addOnTabSelectedListener(mOnTabSelect);
@@ -76,14 +71,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
-    private final View.OnClickListener mFloatBut = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Snackbar.make(v, "Here's a Snackbar", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-        }
-    };
 
     private TabLayout.OnTabSelectedListener mOnTabSelect = new TabLayout.OnTabSelectedListener() {
         @Override
@@ -112,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_search:
+            case R.id.open_bluetooth:
                 openBlueTooth();
                 break;
             default:

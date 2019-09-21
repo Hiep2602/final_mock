@@ -28,7 +28,7 @@ import gst.trainingcourse.final_mock.R;
 import gst.trainingcourse.final_mock.adapter.VideoAdapter;
 import gst.trainingcourse.final_mock.utils.OnItemClick;
 
-public class VideoFragment extends BaseFragment implements OnItemClick {
+public class VidFragment extends BaseFragment implements OnItemClick {
     private RecyclerView rvVideo;
     private List<ITemVideo> mListVideos;
 
@@ -46,7 +46,7 @@ public class VideoFragment extends BaseFragment implements OnItemClick {
         super.onViewCreated(view, savedInstanceState);
         ITemVideo mItemVideo = new ITemVideo();
         mListVideos = mItemVideo.parseAllVideo(getContext());
-        VideoAdapter adapter = new VideoAdapter();
+        VideoAdapter adapter = new VideoAdapter(getContext());
         adapter.setData(mListVideos);
         adapter.setOnItemClick(this);
         rvVideo = view.findViewById(R.id.rv_video);
@@ -61,7 +61,7 @@ public class VideoFragment extends BaseFragment implements OnItemClick {
     }
 
     @Override
-    public void onITemOnLongClick(View view, Object T, int position) {
+    public void onITemOnLongClick( int position) {
 
     }
 

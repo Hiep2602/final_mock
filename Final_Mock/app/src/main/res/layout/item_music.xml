@@ -37,19 +37,6 @@
                     android:id="@+id/lyt_checked"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/circleimage"
-                        android:tint="@color/colorAccent" />
-
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_centerInParent="true"
-                        app:srcCompat="@drawable/ic_done_white_24dp" />
-
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -61,6 +48,7 @@
                         android:id="@+id/imv_arrtist"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
+                        android:src="@drawable/music"
                         app:civ_border_width="0dp" />
 
                 </RelativeLayout>

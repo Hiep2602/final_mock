@@ -5,14 +5,13 @@ import android.content.Context;
 import java.util.ArrayList;
 
 import gst.trainingcourse.final_mock.models.ItemPhoto;
-import gst.trainingcourse.final_mock.worker.LoadPhoto;
 
 
-public class PhotoPresenter {
+public class mmm {
 
 
     public void parseAllImages(Context context, PhotoUi photoUi) {
-       new LoadPhoto(context,photoUi).execute();
+//       new LoadPhoto(context,photoUi).execute();
     }
 
 

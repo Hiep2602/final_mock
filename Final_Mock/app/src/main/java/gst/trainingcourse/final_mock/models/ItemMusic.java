@@ -18,6 +18,7 @@ public class ItemMusic {
     private String pathImage;
 
     private int duration;
+    private String pathMusic;
 
     public ItemMusic() {
     }
@@ -61,7 +62,13 @@ public class ItemMusic {
         this.nameSong = nameSong;
     }
 
+    public String getPathMusic() {
+        return pathMusic;
+    }
 
+    public void setPathMusic(String pathMusic) {
+        this.pathMusic = pathMusic;
+    }
 
     //    public void parseAllMusic(Context context) {
 //

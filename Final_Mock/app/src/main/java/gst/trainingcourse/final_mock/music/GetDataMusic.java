@@ -1,28 +1,20 @@
-package gst.trainingcourse.final_mock.presenter;
+package gst.trainingcourse.final_mock.music;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.provider.MediaStore;
-import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import gst.trainingcourse.final_mock.models.ItemMusic;
 
-public class MusicPresenter {
+public class GetDataMusic {
+    private List<ItemMusic> mItemMusics;
 
-    private MusicUi mMusicUi;
-
-
-    public MusicPresenter(MusicUi musicUi) {
-        mMusicUi = musicUi;
-
-    }
-
-    public void parseAllAudio(Context context) {
+    public List<ItemMusic> getmItemMusic(Context context) {
         try {
-            ArrayList<ItemMusic> mItemMusics = new ArrayList<>();
+            mItemMusics = new ArrayList<>();
             Cursor cur = context.getContentResolver().query(
                     MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, null, null,
                     null);
@@ -41,19 +33,14 @@ public class MusicPresenter {
                     String pathMusic = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
                     music.setPathMusic(pathMusic);
                     mItemMusics.add(music);
-                    mMusicUi.musicData(mItemMusics);
-
                 } while (cur.moveToNext());
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return mItemMusics;
     }
 
-
-    public interface MusicUi {
-        void musicData(ArrayList<ItemMusic> musics);
-
-    }
 }

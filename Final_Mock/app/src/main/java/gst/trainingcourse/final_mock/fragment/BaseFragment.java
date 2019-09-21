@@ -1,57 +1,30 @@
 package gst.trainingcourse.final_mock.fragment;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 
-import gst.trainingcourse.final_mock.MainActivity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Parcelable;
+import android.support.v4.app.Fragment;
+import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
 
 public abstract class BaseFragment extends Fragment {
-    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
 
-    public boolean checkPermision(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context,
-                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    showDialog("Request permission", getContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
-                } else {
-                    ActivityCompat.requestPermissions((Activity) context,
-                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-                }
-                return false;
-            } else {
-                return true;
-            }
-        } else {
-            return true;
+    protected void shareData(List<Uri> uris, String type) {
+        try {
+            Intent share = new Intent();
+            share.setAction(Intent.ACTION_SEND_MULTIPLE);
+            share.setType(type);
+            share.putParcelableArrayListExtra(Intent.EXTRA_STREAM, (ArrayList<? extends Parcelable>) uris);
+            getContext().startActivity(share);
+        } catch (Exception e) {
+            Log.e("ShareApp", e.getMessage());
         }
     }
 
-    private void showDialog(final String msg, final Context context,
-                            final String permission) {
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
-        alertBuilder.setCancelable(true);
-        alertBuilder.setTitle("Permission necessary");
-        alertBuilder.setMessage(msg + " permission is necessary");
-        alertBuilder.setPositiveButton(android.R.string.yes,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        ActivityCompat.requestPermissions((Activity) context,
-                                new String[]{permission},
-                                MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-                    }
-                });
-        AlertDialog alert = alertBuilder.create();
-        alert.show();
-    }
+
 }

@@ -8,10 +8,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import gst.trainingcourse.final_mock.R;
-import gst.trainingcourse.final_mock.fragment.AppFragment;
-import gst.trainingcourse.final_mock.fragment.MusicFragment;
-import gst.trainingcourse.final_mock.fragment.PhotoFragment;
-import gst.trainingcourse.final_mock.fragment.VideoFragment;
+import gst.trainingcourse.final_mock.app.AppInfoFragment;
+import gst.trainingcourse.final_mock.fragment.mmm;
+import gst.trainingcourse.final_mock.music.MusicFragment;
+import gst.trainingcourse.final_mock.photo.PhotoFragment;
+import gst.trainingcourse.final_mock.video.VideoFragment;
 
 
 public class PageAdapter extends FragmentPagerAdapter {
@@ -32,14 +33,14 @@ public class PageAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new AppFragment();
+                return new AppInfoFragment();
             case 1:
 
-                return MusicFragment.newMusicInstance();
+                return new MusicFragment();
 
             case 2:
 
-                return PhotoFragment.newPhotoInstance();
+                return new PhotoFragment();
 
             case 3:
                 return new VideoFragment();

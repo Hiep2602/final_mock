@@ -3,10 +3,12 @@ package gst.trainingcourse.final_mock.fragment;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
@@ -21,18 +23,17 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import gst.trainingcourse.final_mock.AppInfo;
+import gst.trainingcourse.final_mock.models.AppInfo;
 import gst.trainingcourse.final_mock.BuildConfig;
 import gst.trainingcourse.final_mock.R;
 import gst.trainingcourse.final_mock.adapter.AppInfoAdapter;
 import gst.trainingcourse.final_mock.utils.OnItemClick;
 
-import static java.security.AccessController.getContext;
-
 
 public class AppFragment extends BaseFragment implements OnItemClick {
     private List<AppInfo> mAppInfos;
     private AppInfoAdapter adapter;
+    private List<Uri> file;
 
     @Nullable
     @Override
@@ -66,29 +67,17 @@ public class AppFragment extends BaseFragment implements OnItemClick {
     }
 
 
+
+
     @Override
     public void onItemClick(int position) {
         Toast.makeText(getContext(), "fjafa" + mAppInfos.get(position).getFilePathApk().toString(), Toast.LENGTH_SHORT).show();
-        SharePK(position);
     }
 
     @Override
-    public void onITemOnLongClick(View view, Object T, int position) {
+    public void onITemOnLongClick(int position) {
 
     }
 
-    public void SharePK(int position) {
-        try {
-            Intent share = new Intent();
-            share.setAction(Intent.ACTION_SEND);
-            share.setType("*/*");
-            share.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getContext(),
-                    BuildConfig.APPLICATION_ID + ".provider", new File(mAppInfos.get(position).getFilePathApk())));
-            getContext().startActivity(share);
-        } catch (Exception e) {
-            Log.e("ShareApp", e.getMessage());
-        }
-
-    }
 
 }

@@ -1,9 +1,6 @@
-package gst.trainingcourse.final_mock;
+package gst.trainingcourse.final_mock.models;
 
 import android.graphics.drawable.Drawable;
-import android.os.Parcel;
-
-import java.io.File;
 
 
 public class AppInfo{

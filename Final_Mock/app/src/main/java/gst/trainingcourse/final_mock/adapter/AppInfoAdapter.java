@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import gst.trainingcourse.final_mock.AppInfo;
+import gst.trainingcourse.final_mock.models.AppInfo;
 import gst.trainingcourse.final_mock.R;
 
 public class AppInfoAdapter extends BaseRecycleAdapter<AppInfo> {
@@ -21,21 +21,23 @@ public class AppInfoAdapter extends BaseRecycleAdapter<AppInfo> {
     }
 
     @Override
-    protected void onBindView(BaseViewHolder holder, AppInfo model) {
+    protected void onBindView(BaseViewHolder holder, AppInfo model,int position) {
         AppInfoHoder hoder = (AppInfoHoder) holder;
         hoder.mTvNameApp.setText(model.getLabel());
         hoder.mImvApp.setImageDrawable(model.getIcon());
+        hoder.mTvPackgeName.setText(model.getPackageName());
 
     }
 
     private static class AppInfoHoder extends BaseViewHolder {
         private ImageView mImvApp;
-        private TextView mTvNameApp;
+        private TextView mTvNameApp, mTvPackgeName;
 
         public AppInfoHoder(@NonNull View view) {
             super(view);
             mImvApp = view.findViewById(R.id.iv_item_icon);
             mTvNameApp = view.findViewById(R.id.tv_item_name);
+            mTvPackgeName = view.findViewById(R.id.tv_packagename);
         }
     }
 }
