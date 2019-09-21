@@ -2,11 +2,10 @@ package gst.trainingcourse.final_mock.presenter;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.provider.MediaStore;
-import android.util.Log;
 
 import java.util.ArrayList;
+
 
 import gst.trainingcourse.final_mock.models.ItemMusic;
 
@@ -20,34 +19,34 @@ public class MusicPresenter {
 
     }
 
-    public void parseAllAudio(Context context) {
-        try {
-            ArrayList<ItemMusic> mItemMusics = new ArrayList<>();
-            Cursor cur = context.getContentResolver().query(
-                    MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, null, null,
-                    null);
+    public void parseAllMusic(Context context) {
 
-            if (cur == null) {
-            } else if (!cur.moveToFirst()) {
-            } else {
-                do {
-                    int artistColumn = cur.getColumnIndex(MediaStore.Audio.Media.ARTIST);
-                    int titleColumn = cur.getColumnIndex(MediaStore.Audio.Media.TITLE);
-                    int filePathIndex = cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        ArrayList<ItemMusic> mItemMusics = new ArrayList<>();
+        Cursor cur = context.getContentResolver().query(
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, null, null,
+                null);
 
-                    ItemMusic music = new ItemMusic();
-                    music.setNameSong(cur.getString(titleColumn));
-                    music.setPathImage(cur.getString(filePathIndex));
-                    music.setAuthor(cur.getString(artistColumn));
-                    mItemMusics.add(music);
-                    mMusicUi.musicData(mItemMusics);
+        if (cur!=null&& !cur.moveToFirst()){
+            do {
+                int artistColumn = cur.getColumnIndex(MediaStore.Audio.Media.ARTIST);
+                int titleColumn = cur.getColumnIndex(MediaStore.Audio.Media.TITLE);
+                int filePathIndex = cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 
-                } while (cur.moveToNext());
-            }
+                ItemMusic music = new ItemMusic();
+                music.setNameSong(cur.getString(titleColumn));
+                music.setPathImage(cur.getString(filePathIndex));
+                music.setAuthor(cur.getString(artistColumn));
+                mItemMusics.add(music);
+                mMusicUi.musicData(mItemMusics);
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            } while (cur.moveToNext());
         }
+
+
+        if (cur != null) {
+            cur.close();
+        }
+
     }
 
 

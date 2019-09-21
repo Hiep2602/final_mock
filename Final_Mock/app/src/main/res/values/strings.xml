@@ -9,4 +9,5 @@
     <string name="todo">TODO</string>
     <string name="bluetooth_off">bluetooth_off</string>
     <string name="bluetooth_on">bluetooth_on</string>
+
 </resources>

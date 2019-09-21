@@ -39,11 +39,9 @@ public class PhotoFragment extends Fragment implements PhotoAdapter.OnClickImage
     private PhotoPresenter mPhotoPresenter;
 
     private PhotoPresenter.PhotoUi mPhotoUi = itemPhotos -> {
-        if (mItemPhotos != null) {
             mItemPhotos.clear();
             mItemPhotos.addAll(itemPhotos);
             mPhotoAdapter.notifyDataSetChanged();
-        }
     };
 
     public static PhotoFragment newPhotoInstance() {
@@ -61,12 +59,18 @@ public class PhotoFragment extends Fragment implements PhotoAdapter.OnClickImage
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mRvPhoto = view.findViewById(R.id.rv_photo);
+
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         MainActivity m = (MainActivity) getActivity();
         if (Objects.requireNonNull(m).checkPermision(getContext())) {
             mPhotoPresenter = new PhotoPresenter();
             mPhotoPresenter.parseAllImages(getActivity(),mPhotoUi);
             mPhotoAdapter = new PhotoAdapter(getActivity(), mItemPhotos, this);
-
         }
 
         mRvPhoto.setLayoutManager(new GridLayoutManager(getContext(), 3, LinearLayoutManager.VERTICAL, false));
@@ -75,26 +79,18 @@ public class PhotoFragment extends Fragment implements PhotoAdapter.OnClickImage
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_photo, menu);
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        menuItem.setVisible(false);
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.photo_bluetooth_on:
 
-                break;
-            case R.id.photo_bluetooth_off:
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void onClickImage(int position) {
-//        SharePK(position);
-        openImage(position);
+        SharePK(position);
+//        openImage(position);
+
     }
 
     public void SharePK(int position) {

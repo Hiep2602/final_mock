@@ -13,12 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.ArrayList;
@@ -26,12 +24,14 @@ import java.util.ArrayList;
 import gst.trainingcourse.final_mock.R;
 import gst.trainingcourse.final_mock.models.ItemMusic;
 
-public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder> implements Filterable {
+public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder> implements Filterable  {
     private ArrayList<ItemMusic> mMusics;
 
     private ArrayList<ItemMusic> mMusicsFull;
 
     private Context mContext;
+
+    private ClickItemMusic mClickItemMusic;
 
     private Filter mMusicFilter = new Filter() {
         @Override
@@ -61,9 +61,10 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
         }
     };
 
-    public MusicAdapter(Context context, ArrayList<ItemMusic> itemMusics) {
+    public MusicAdapter(Context context, ArrayList<ItemMusic> itemMusics,ClickItemMusic clickItemMusic) {
         mContext = context;
         mMusics = itemMusics;
+        mClickItemMusic = clickItemMusic;
         mMusicsFull = new ArrayList<>(mMusics);
     }
 
@@ -73,7 +74,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
     public MusicHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.item_music, viewGroup, false);
-        return new MusicHolder(view);
+        return new MusicHolder(view,mClickItemMusic);
     }
 
     @Override
@@ -129,13 +130,21 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
         private CircularImageView mImageMusic;
         public RelativeLayout lyt_checked, lyt_image;
 
+        private ClickItemMusic mClickItemMusic;
+
         private TextView mTvName, mTvAuthor;
 
-        MusicHolder(@NonNull View view) {
+        MusicHolder(@NonNull View view, ClickItemMusic clickItemMusic) {
             super(view);
+            this.mClickItemMusic = clickItemMusic;
             mImageMusic = view.findViewById(R.id.imv_arrtist);
             mTvName = view.findViewById(R.id.tvnamesong);
             mTvAuthor = view.findViewById(R.id.tvnamearrtist);
+            view.setOnClickListener(v -> mClickItemMusic.clickItemMusic(getAdapterPosition()));
         }
+    }
+
+    public interface ClickItemMusic{
+        void clickItemMusic(int position);
     }
 }

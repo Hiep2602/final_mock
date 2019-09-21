@@ -1,6 +1,7 @@
 package gst.trainingcourse.final_mock.adapter;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -40,9 +41,8 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoHolder>
     public void onBindViewHolder(@NonNull PhotoHolder photoHolder, int position) {
         ItemPhoto photo = mPhotos.get(position);
         Glide.with(mContext).load(photo.getPathImage()).into(photoHolder.mImagePhoto);
-        photoHolder.itemView.setOnClickListener(v -> {
-            mOnClickImage.onClickImage(position);
-        });
+//        photoHolder.mImagePhoto.setImageBitmap(BitmapFactory.decodeFile(photo.getPathImage()));
+        photoHolder.itemView.setOnClickListener(v -> mOnClickImage.onClickImage(position));
     }
 
     @Override

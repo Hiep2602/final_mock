@@ -1,5 +1,9 @@
 package gst.trainingcourse.final_mock.models;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
@@ -9,13 +13,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ITemVideo {
-    private String fileName, filePath, fileVideo;
+
+    private String fileName;
+    private String filePath;
+    private String fileVideo;
     private String duration;
 
+    @Ignore
     public ITemVideo(String fileName, String filePath) {
         this.fileName = fileName;
         this.filePath = filePath;
     }
+
+
+
+
 
     public String getDuration() {
         return duration;

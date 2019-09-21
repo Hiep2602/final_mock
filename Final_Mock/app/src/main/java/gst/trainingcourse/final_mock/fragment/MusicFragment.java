@@ -1,5 +1,6 @@
 package gst.trainingcourse.final_mock.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import android.view.inputmethod.EditorInfo;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import gst.trainingcourse.final_mock.SplashScreen;
 import gst.trainingcourse.final_mock.MainActivity;
 import gst.trainingcourse.final_mock.R;
 import gst.trainingcourse.final_mock.adapter.MusicAdapter;
@@ -28,6 +30,11 @@ public class MusicFragment extends Fragment {
     private ArrayList<ItemMusic> mItemMusics;
 
     private MusicAdapter mMusicAdapter;
+
+    private MusicAdapter.ClickItemMusic mClickItemMusic = position -> {
+        Intent intent = new Intent(getActivity(), SplashScreen.class);
+        Objects.requireNonNull(getContext()).startActivity(intent);
+    };
 
     private MusicPresenter.MusicUi musicUi = new MusicPresenter.MusicUi() {
         @Override
@@ -50,28 +57,28 @@ public class MusicFragment extends Fragment {
     }
 
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView recyclerView = view.findViewById(R.id.rv_music);
         MainActivity m = (MainActivity) getActivity();
         if (Objects.requireNonNull(m).checkPermision(getContext())) {
+            MusicPresenter mMusicPresenter = new MusicPresenter(musicUi);
+            mMusicPresenter.parseAllMusic(Objects.requireNonNull(getContext()));
+            mMusicAdapter = new MusicAdapter(getContext(), mItemMusics, mClickItemMusic);
         }
-        MusicPresenter mMusicPresenter = new MusicPresenter(musicUi);
-        mMusicPresenter.parseAllAudio(Objects.requireNonNull(getContext()));
-        mMusicAdapter = new MusicAdapter(getContext(), mItemMusics);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(mMusicAdapter);
+
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu,menu);
         MenuItem menuItem = menu.findItem(R.id.action_search);
         SearchView searchMusic = (SearchView) menuItem.getActionView();
         searchMusic.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
         searchMusic.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

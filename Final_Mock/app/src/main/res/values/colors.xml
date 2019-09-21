@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#03A9F4</color>
     <color name="colorAccent">#FF4081</color>
     <color name="color_item_music">#38FA79</color>
+    <color name="color_splash_background">#03A9F4</color>
 </resources>
