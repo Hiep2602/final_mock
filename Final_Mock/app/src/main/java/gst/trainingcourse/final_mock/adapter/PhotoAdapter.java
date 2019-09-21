@@ -41,7 +41,6 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoHolder>
     public void onBindViewHolder(@NonNull PhotoHolder photoHolder, int position) {
         ItemPhoto photo = mPhotos.get(position);
         Glide.with(mContext).load(photo.getPathImage()).into(photoHolder.mImagePhoto);
-//        photoHolder.mImagePhoto.setImageBitmap(BitmapFactory.decodeFile(photo.getPathImage()));
         photoHolder.itemView.setOnClickListener(v -> mOnClickImage.onClickImage(position));
     }
 

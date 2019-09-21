@@ -26,7 +26,7 @@ public class MusicPresenter {
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, null, null,
                 null);
 
-        if (cur!=null&& !cur.moveToFirst()){
+        if (cur!=null&& cur.moveToFirst()){
             do {
                 int artistColumn = cur.getColumnIndex(MediaStore.Audio.Media.ARTIST);
                 int titleColumn = cur.getColumnIndex(MediaStore.Audio.Media.TITLE);
@@ -41,7 +41,6 @@ public class MusicPresenter {
 
             } while (cur.moveToNext());
         }
-
 
         if (cur != null) {
             cur.close();
