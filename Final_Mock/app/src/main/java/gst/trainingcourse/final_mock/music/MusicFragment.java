@@ -4,13 +4,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -22,16 +24,15 @@ import java.util.List;
 import gst.trainingcourse.final_mock.BuildConfig;
 import gst.trainingcourse.final_mock.R;
 import gst.trainingcourse.final_mock.adapter.MusicsAdapter;
-import gst.trainingcourse.final_mock.fragment.BaseFragment;
 import gst.trainingcourse.final_mock.fragment.FragmentPlayMusic;
 import gst.trainingcourse.final_mock.models.ItemMusic;
+import gst.trainingcourse.final_mock.utils.Constants;
 import gst.trainingcourse.final_mock.utils.OnItemClick;
 
-public class MusicFragment extends BaseFragment implements MusicContract.View {
+public class MusicFragment extends Fragment implements MusicContract.View {
     private RecyclerView rvMusic;
     private MusicsAdapter mMusicAdapter;
     private List<Uri> uris;
-    private FloatingActionButton fab;
 
     @Nullable
     @Override
@@ -48,10 +49,9 @@ public class MusicFragment extends BaseFragment implements MusicContract.View {
     }
 
     private void initView(View view) {
+        setHasOptionsMenu(true);
         rvMusic = view.findViewById(R.id.rv_music);
         rvMusic.setLayoutManager(new LinearLayoutManager(getContext()));
-        fab = getActivity().findViewById(R.id.fab);
-        fab.setOnClickListener(clickFab);
     }
 
     private void getInfoMusic() {
@@ -70,7 +70,7 @@ public class MusicFragment extends BaseFragment implements MusicContract.View {
         }
 
         @Override
-        public void onITemOnLongClick(int position) {
+        public void onITemOnLongClick(View v, int position) {
             Toast.makeText(getContext(), "" + position, Toast.LENGTH_SHORT).show();
             toggleSelection(position);
         }
@@ -87,10 +87,10 @@ public class MusicFragment extends BaseFragment implements MusicContract.View {
         mMusicAdapter.toggleSelection(position);
         int count = mMusicAdapter.getSelectedItemCount();
 
-        uris = new ArrayList<>();
         if (count == 0) {
 
         } else {
+            uris = new ArrayList<>();
             for (int i = 0; i < count; i++) {
                 Uri u = FileProvider.getUriForFile(getContext(),
                         BuildConfig.APPLICATION_ID + ".provider", new File(mMusicAdapter.getmData()
@@ -101,15 +101,24 @@ public class MusicFragment extends BaseFragment implements MusicContract.View {
         }
     }
 
-    protected View.OnClickListener clickFab = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (uris == null) {
-                Snackbar.make(v, "No Item Selects", Toast.LENGTH_SHORT).show();
-            } else {
-                shareData(uris, "*/*");
-            }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.senddata:
+                if (uris != null) {
+                    Constants.shareData(uris, "*/*", getContext());
+                } else {
+                    Toast.makeText(getContext(), "Please select item", Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
-    };
+        return super.onOptionsItemSelected(item);
+    }
 
 }

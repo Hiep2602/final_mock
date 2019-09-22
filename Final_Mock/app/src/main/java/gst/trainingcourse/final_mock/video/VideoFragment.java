@@ -5,13 +5,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -23,15 +25,14 @@ import java.util.List;
 import gst.trainingcourse.final_mock.BuildConfig;
 import gst.trainingcourse.final_mock.R;
 import gst.trainingcourse.final_mock.adapter.VideoAdapter;
-import gst.trainingcourse.final_mock.fragment.BaseFragment;
 import gst.trainingcourse.final_mock.models.ITemVideo;
+import gst.trainingcourse.final_mock.utils.Constants;
 import gst.trainingcourse.final_mock.utils.OnItemClick;
 
-public class VideoFragment extends BaseFragment implements VideoContract.View {
+public class VideoFragment extends Fragment implements VideoContract.View {
     private RecyclerView rvVideo;
     private VideoAdapter mVideoAdapter;
     private List<Uri> uris;
-    private FloatingActionButton fab;
 
     @Nullable
     @Override
@@ -48,10 +49,9 @@ public class VideoFragment extends BaseFragment implements VideoContract.View {
     }
 
     private void initView(View view) {
+        setHasOptionsMenu(true);
         rvVideo = view.findViewById(R.id.rv_video);
         rvVideo.setLayoutManager(new LinearLayoutManager(getContext()));
-        fab = getActivity().findViewById(R.id.fab);
-        fab.setOnClickListener(clickFab);
 
     }
 
@@ -68,7 +68,7 @@ public class VideoFragment extends BaseFragment implements VideoContract.View {
         }
 
         @Override
-        public void onITemOnLongClick(int position) {
+        public void onITemOnLongClick(View v,int position) {
             Toast.makeText(getContext(), "" + position, Toast.LENGTH_SHORT).show();
             toggleSelection(position);
         }
@@ -78,10 +78,10 @@ public class VideoFragment extends BaseFragment implements VideoContract.View {
         mVideoAdapter.toggleSelection(position);
         int count = mVideoAdapter.getSelectedItemCount();
 
-        uris = new ArrayList<>();
         if (count == 0) {
 
         } else {
+            uris = new ArrayList<>();
             for (int i = 0; i < count; i++) {
                 Uri u = FileProvider.getUriForFile(getContext(),
                         BuildConfig.APPLICATION_ID + ".provider", new File(mVideoAdapter.getmData()
@@ -100,23 +100,30 @@ public class VideoFragment extends BaseFragment implements VideoContract.View {
 
     }
 
-    protected View.OnClickListener clickFab = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (uris == null) {
-                Snackbar.make(v, "No Item Selects", Toast.LENGTH_SHORT).show();
-            } else {
-                shareData(uris, "*/*");
-            }
-        }
-    };
-
     @Override
     public void showVideo(List<ITemVideo> mItemVideos) {
-        Log.d("??", "showVideo: " + mItemVideos.size());
         mVideoAdapter = new VideoAdapter(getContext());
         mVideoAdapter.setData(mItemVideos);
         mVideoAdapter.setOnItemClick(mOnclickItem);
         rvVideo.setAdapter(mVideoAdapter);
+    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.senddata:
+                if (uris != null) {
+                    Constants.shareData(uris, "*/*", getContext());
+                } else {
+                    Toast.makeText(getContext(), "Please select item", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

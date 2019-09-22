@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout mTabLayout;
     private ViewPager mViewpager;
     private PageAdapter adapter;
-    private FloatingActionButton fab;
     private BluetoothAdapter bluetoothAdapter;
     private TabItem tabChats, tabStatus, tabCalls, tabPhoto;
 
@@ -63,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
         tabCalls = findViewById(R.id.tabCalls);
         tabPhoto = findViewById(R.id.tabPhoto);
         mViewpager = findViewById(R.id.viewPager);
-        fab = findViewById(R.id.fab);
         adapter = new PageAdapter(getSupportFragmentManager(), mTabLayout.getTabCount(), MainActivity.this);
         mViewpager.setAdapter(adapter);
         mTabLayout.addOnTabSelectedListener(mOnTabSelect);
@@ -102,6 +100,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.open_bluetooth:
                 openBlueTooth();
                 break;
+            case R.id.close_bluetooth:
+
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -122,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
 
     public boolean checkPermision(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -175,4 +177,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
 }

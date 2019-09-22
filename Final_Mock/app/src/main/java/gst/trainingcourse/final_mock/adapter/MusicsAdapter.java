@@ -40,7 +40,7 @@ public class MusicsAdapter extends BaseRecycleAdapter<ItemMusic> {
         musicHolder.mTvAuthor.setText(model.getAuthor());
         displayImage(musicHolder, model);
         musicHolder.lyt_parent.setOnLongClickListener(v -> {
-            onItemClick.onITemOnLongClick(position);
+            onItemClick.onITemOnLongClick(v,position);
             return true;
         });
         musicHolder.lyt_parent.setOnClickListener(v -> {

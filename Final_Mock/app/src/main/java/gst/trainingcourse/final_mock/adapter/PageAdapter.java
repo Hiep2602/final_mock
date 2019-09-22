@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import gst.trainingcourse.final_mock.R;
 import gst.trainingcourse.final_mock.app.AppInfoFragment;
-import gst.trainingcourse.final_mock.fragment.mmm;
 import gst.trainingcourse.final_mock.music.MusicFragment;
 import gst.trainingcourse.final_mock.photo.PhotoFragment;
 import gst.trainingcourse.final_mock.video.VideoFragment;

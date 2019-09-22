@@ -1,19 +1,21 @@
 package gst.trainingcourse.final_mock.photo;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import java.io.File;
@@ -23,16 +25,14 @@ import java.util.List;
 import gst.trainingcourse.final_mock.BuildConfig;
 import gst.trainingcourse.final_mock.R;
 import gst.trainingcourse.final_mock.adapter.PhotosAdapter;
-import gst.trainingcourse.final_mock.fragment.BaseFragment;
 import gst.trainingcourse.final_mock.models.ItemPhoto;
+import gst.trainingcourse.final_mock.utils.Constants;
 import gst.trainingcourse.final_mock.utils.OnItemClick;
 
-public class PhotoFragment extends BaseFragment implements PhotoContract.View {
+public class PhotoFragment extends Fragment implements PhotoContract.View {
     private RecyclerView mRvPhoto;
     private PhotosAdapter mAdapter;
     private List<Uri> uris;
-    private FloatingActionButton fab;
-    private Button btnButton;
 
     @Nullable
     @Override
@@ -49,13 +49,9 @@ public class PhotoFragment extends BaseFragment implements PhotoContract.View {
     }
 
     private void initView(View view) {
+        setHasOptionsMenu(true);
         mRvPhoto = view.findViewById(R.id.rv_photo);
-        fab = getActivity().findViewById(R.id.fab);
         mRvPhoto.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        fab.setBackgroundResource(R.drawable.ic_launcher_background);
-        fab.setOnClickListener(clickFab);
-        btnButton = view.findViewById(R.id.btn_data);
-        btnButton.setOnClickListener(clickFab);
 
     }
 
@@ -68,9 +64,9 @@ public class PhotoFragment extends BaseFragment implements PhotoContract.View {
         mAdapter.toggleSelection(position);
         int count = mAdapter.getSelectedItemCount();
 
-        uris = new ArrayList<>();
         if (count == 0) {
         } else {
+            uris = new ArrayList<>();
             for (int i = 0; i < count; i++) {
                 Uri u = FileProvider.getUriForFile(getContext(),
                         BuildConfig.APPLICATION_ID + ".provider", new File(mAdapter.getmData()
@@ -81,19 +77,12 @@ public class PhotoFragment extends BaseFragment implements PhotoContract.View {
         }
     }
 
-    protected View.OnClickListener clickFab = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-//            if (uris == null) {
-////                Log.d("dfasdf", "onClick: " + uris.size());
-////                Snackbar.make(v, "No Item Selects", Toast.LENGTH_SHORT).show();
-//            } else {
-//                shareData(uris, "*/*");
-//            }
-            Toast.makeText(getContext(), "" + getFragmentManager().getFragments().getClass().getSimpleName(), Toast.LENGTH_SHORT).show();
-        }
-    };
-
+    private void openImage(int position) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri data = Uri.parse(mAdapter.getmData().get(position).getPathImage());
+        intent.setDataAndType(data, "image/*");
+        getContext().startActivity(intent);
+    }
 
     @Override
     public void showPhoto(List<ItemPhoto> itemPhotos) {
@@ -107,15 +96,36 @@ public class PhotoFragment extends BaseFragment implements PhotoContract.View {
     private OnItemClick mOnclickItem = new OnItemClick() {
         @Override
         public void onItemClick(int position) {
+            openImage(position);
             Toast.makeText(getContext(), "asfaf" + position, Toast.LENGTH_SHORT).show();
         }
 
         @Override
-        public void onITemOnLongClick(int position) {
+        public void onITemOnLongClick(View v, int position) {
             Toast.makeText(getContext(), "" + position, Toast.LENGTH_SHORT).show();
             toggleSelection(position);
             Log.d("size", "onITemOnLongClick: " + uris.size());
         }
     };
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.senddata:
+                if (uris != null) {
+                    Constants.shareData(uris, "*/*", getContext());
+                } else {
+                    Toast.makeText(getContext(), "Please select item", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 }

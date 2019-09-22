@@ -1,5 +1,6 @@
 package gst.trainingcourse.final_mock.adapter;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
@@ -51,26 +52,45 @@ public abstract class BaseRecycleAdapter<T> extends RecyclerView.Adapter<BaseVie
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder holder, int postion) {
         onBindView(holder, mData.get(postion), postion);
+        holder.itemView.setActivated(selected_items.get(postion, false));
         holder.itemView.setOnClickListener(v -> {
             if (onItemClick != null) {
                 onItemClick.onItemClick(holder.getAdapterPosition());
             }
         });
         holder.itemView.setOnLongClickListener(v -> {
-            onItemClick.onITemOnLongClick(holder.getAdapterPosition());
+            onItemClick.onITemOnLongClick(v, postion);
             return true;
         });
         toggleCheckedIcon(holder, postion);
     }
 
+    public List<Integer> getSelectedItems() {
+        List<Integer> items = new ArrayList<>(selected_items.size());
+        for (int i = 0; i < selected_items.size(); i++) {
+            items.add(selected_items.keyAt(i));
+        }
+        return items;
+    }
+
+    public void removeData(int position) {
+        mData.remove(position);
+        resetCurrentIndex();
+    }
+
     protected void toggleCheckedIcon(BaseViewHolder holder, int position) {
         if (selected_items.get(position, false)) {
-            holder.itemView.setVisibility(View.GONE);
+            holder.itemView.setBackgroundColor(Color.TRANSPARENT);
             if (current_selected_idx == position) resetCurrentIndex();
         } else {
             holder.itemView.setVisibility(View.VISIBLE);
             if (current_selected_idx == position) resetCurrentIndex();
         }
+    }
+
+    public void clearSelections() {
+        selected_items.clear();
+        notifyDataSetChanged();
     }
 
     private void resetCurrentIndex() {
