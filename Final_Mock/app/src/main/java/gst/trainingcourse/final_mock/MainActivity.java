@@ -100,9 +100,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.open_bluetooth:
                 openBlueTooth();
                 break;
-            case R.id.close_bluetooth:
-
-                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -118,8 +115,8 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, 0);
             IntentFilter intentFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
             registerReceiver(mBroadcastReciver, intentFilter);
-
-
+        } else {
+            bluetoothAdapter.disable();
         }
 
     }
@@ -165,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private final BroadcastReceiver mBroadcastReciver = new BroadcastReceiver() {
-        @RequiresApi(api = Build.VERSION_CODES.ECLAIR)
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();

@@ -8,10 +8,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import gst.trainingcourse.final_mock.R;
-import gst.trainingcourse.final_mock.app.AppInfoFragment;
-import gst.trainingcourse.final_mock.music.MusicFragment;
-import gst.trainingcourse.final_mock.photo.PhotoFragment;
-import gst.trainingcourse.final_mock.video.VideoFragment;
+import gst.trainingcourse.final_mock.ui.app.AppInfoFragment;
+import gst.trainingcourse.final_mock.ui.music.MusicFragment;
+import gst.trainingcourse.final_mock.ui.photo.PhotoFragment;
+import gst.trainingcourse.final_mock.ui.video.VideoFragment;
 
 
 public class PageAdapter extends FragmentPagerAdapter {

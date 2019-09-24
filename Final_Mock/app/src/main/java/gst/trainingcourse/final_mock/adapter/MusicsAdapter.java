@@ -1,26 +1,36 @@
 package gst.trainingcourse.final_mock.adapter;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gst.trainingcourse.final_mock.R;
 import gst.trainingcourse.final_mock.models.ItemMusic;
+import gst.trainingcourse.final_mock.models.ItemPhoto;
 import gst.trainingcourse.final_mock.utils.OnItemClick;
 
 public class MusicsAdapter extends BaseRecycleAdapter<ItemMusic> {
-    private OnItemClick onItemClick;
+    private List<String> itemSelected;
+    private Context context;
 
-    public MusicsAdapter(OnItemClick onItemClick) {
+    public MusicsAdapter(Context context) {
         super();
-        this.onItemClick = onItemClick;
+        this.context = context;
+        itemSelected = new ArrayList<>();
     }
 
     @Override
@@ -39,14 +49,22 @@ public class MusicsAdapter extends BaseRecycleAdapter<ItemMusic> {
         musicHolder.mTvName.setText(model.getNameSong());
         musicHolder.mTvAuthor.setText(model.getAuthor());
         displayImage(musicHolder, model);
-        musicHolder.lyt_parent.setOnLongClickListener(v -> {
-            onItemClick.onITemOnLongClick(v,position);
-            return true;
-        });
-        musicHolder.lyt_parent.setOnClickListener(v -> {
-            onItemClick.onItemClick(position);
-        });
-        toggleCheckedIcon(musicHolder, position);
+
+        if (itemSelected.contains(getmData().get(position).getPathMusic())) {
+            musicHolder.itemView.setBackgroundColor(Color.BLUE);
+        } else {
+            musicHolder.itemView.setForeground(new ColorDrawable(ContextCompat.getColor(context, android.R.color.transparent)));
+        }
+
+    }
+
+    public ItemMusic getItem(int position) {
+        return getmData().get(position);
+    }
+
+    public void setItemSelected(List<String> itemSelected) {
+        this.itemSelected = itemSelected;
+        notifyDataSetChanged();
     }
 
     private void displayImage(MusicHolder holder, ItemMusic music) {
@@ -71,8 +89,6 @@ public class MusicsAdapter extends BaseRecycleAdapter<ItemMusic> {
 
     private static class MusicHolder extends BaseViewHolder {
         private CircularImageView mImageMusic;
-        private RelativeLayout lyt_checked, lyt_image;
-        private View lyt_parent;
         private TextView mTvName, mTvAuthor;
 
         public MusicHolder(@NonNull View view) {
@@ -80,7 +96,6 @@ public class MusicsAdapter extends BaseRecycleAdapter<ItemMusic> {
             mImageMusic = view.findViewById(R.id.imv_arrtist);
             mTvName = view.findViewById(R.id.tvnamesong);
             mTvAuthor = view.findViewById(R.id.tvnamearrtist);
-            lyt_parent = view.findViewById(R.id.lyt_parent);
         }
     }
 }

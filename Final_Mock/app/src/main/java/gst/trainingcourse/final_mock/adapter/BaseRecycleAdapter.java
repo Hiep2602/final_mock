@@ -18,12 +18,7 @@ import gst.trainingcourse.final_mock.utils.OnItemClick;
 public abstract class BaseRecycleAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
     private List<T> mData = new ArrayList<>();
     private OnItemClick onItemClick;
-    private SparseBooleanArray selected_items;
-    private int current_selected_idx = -1;
 
-    public BaseRecycleAdapter() {
-        selected_items = new SparseBooleanArray();
-    }
 
     public void setOnItemClick(OnItemClick onItemClick) {
         this.onItemClick = onItemClick;
@@ -52,65 +47,20 @@ public abstract class BaseRecycleAdapter<T> extends RecyclerView.Adapter<BaseVie
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder holder, int postion) {
         onBindView(holder, mData.get(postion), postion);
-        holder.itemView.setActivated(selected_items.get(postion, false));
-        holder.itemView.setOnClickListener(v -> {
-            if (onItemClick != null) {
-                onItemClick.onItemClick(holder.getAdapterPosition());
-            }
-        });
-        holder.itemView.setOnLongClickListener(v -> {
-            onItemClick.onITemOnLongClick(v, postion);
-            return true;
-        });
-        toggleCheckedIcon(holder, postion);
+//        holder.itemView.setOnClickListener(v -> {
+//            if (onItemClick != null) {
+//                onItemClick.onItemClick(v, holder.getAdapterPosition());
+//            }
+//        });
+//        holder.itemView.setOnLongClickListener(v -> {
+//            onItemClick.onITemOnLongClick(v, holder.getAdapterPosition());
+//            return true;
+//        });
     }
 
-    public List<Integer> getSelectedItems() {
-        List<Integer> items = new ArrayList<>(selected_items.size());
-        for (int i = 0; i < selected_items.size(); i++) {
-            items.add(selected_items.keyAt(i));
-        }
-        return items;
+    public T getData(int position) {
+        return mData.get(position);
     }
-
-    public void removeData(int position) {
-        mData.remove(position);
-        resetCurrentIndex();
-    }
-
-    protected void toggleCheckedIcon(BaseViewHolder holder, int position) {
-        if (selected_items.get(position, false)) {
-            holder.itemView.setBackgroundColor(Color.TRANSPARENT);
-            if (current_selected_idx == position) resetCurrentIndex();
-        } else {
-            holder.itemView.setVisibility(View.VISIBLE);
-            if (current_selected_idx == position) resetCurrentIndex();
-        }
-    }
-
-    public void clearSelections() {
-        selected_items.clear();
-        notifyDataSetChanged();
-    }
-
-    private void resetCurrentIndex() {
-        current_selected_idx = -1;
-    }
-
-    public void toggleSelection(int pos) {
-        current_selected_idx = pos;
-        if (selected_items.get(pos, false)) {
-            selected_items.delete(pos);
-        } else {
-            selected_items.put(pos, true);
-        }
-        notifyItemChanged(pos);
-    }
-
-    public int getSelectedItemCount() {
-        return selected_items.size();
-    }
-
 
     @Override
     public int getItemCount() {

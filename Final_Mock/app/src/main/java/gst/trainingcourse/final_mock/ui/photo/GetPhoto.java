@@ -1,4 +1,4 @@
-package gst.trainingcourse.final_mock.photo;
+package gst.trainingcourse.final_mock.ui.photo;
 
 import android.content.Context;
 import android.database.Cursor;

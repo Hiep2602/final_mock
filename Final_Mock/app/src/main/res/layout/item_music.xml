@@ -18,7 +18,6 @@
             android:id="@+id/lyt_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_multi_selection"
             android:clickable="true"
             android:orientation="horizontal"
             android:paddingBottom="@dimen/spacing_large"
@@ -36,8 +35,7 @@
                 <RelativeLayout
                     android:id="@+id/lyt_checked"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                </RelativeLayout>
+                    android:layout_height="wrap_content"></RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/lyt_image"

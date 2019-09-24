@@ -3,20 +3,28 @@ package gst.trainingcourse.final_mock.models;
 import android.graphics.drawable.Drawable;
 
 
-public class AppInfo{
+public class AppInfo {
     private String filePathApk;
     private CharSequence label;
     private CharSequence packageName;
     private Drawable icon;
+    private String versionName;
 
-    public AppInfo(String filePathApk, CharSequence label, CharSequence packageName, Drawable icon) {
+    public AppInfo(String filePathApk, CharSequence label, CharSequence packageName, Drawable icon, String versionName) {
         this.filePathApk = filePathApk;
         this.label = label;
         this.packageName = packageName;
         this.icon = icon;
+        this.versionName = versionName;
     }
 
+    public String getVersionName() {
+        return versionName;
+    }
 
+    public void setVersionName(String versionName) {
+        this.versionName = versionName;
+    }
 
     public String getFilePathApk() {
         return filePathApk;

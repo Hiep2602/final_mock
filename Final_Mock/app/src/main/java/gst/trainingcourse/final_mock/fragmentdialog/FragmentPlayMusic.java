@@ -1,4 +1,4 @@
-package gst.trainingcourse.final_mock.fragment;
+package gst.trainingcourse.final_mock.fragmentdialog;
 
 import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
@@ -59,7 +59,6 @@ public class FragmentPlayMusic extends DialogFragment {
         mTvDur = view.findViewById(R.id.dur);
         if (nameSong != null) {
             mTvNameSong.setText("               " + nameSong + "              ");
-            Log.d("filepath", "onViewCreated: " + mFilePathMusic);
             cmdSetDataSource(Uri.fromFile(new File(mFilePathMusic)));
             schedulService();
             cmdStart();
@@ -67,30 +66,50 @@ public class FragmentPlayMusic extends DialogFragment {
         }
     }
 
+    private void updateTimeSong() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                int startTime = mediaPlayer.getCurrentPosition();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss");
+                mmTvPos.setText(simpleDateFormat.format(startTime));
+                mSeekbar.setProgress(startTime);
+                handler.postDelayed(this, 500);
+            }
+        }, 100);
+    }
+
     private void mediaPlayerMonitor() {
         if (mediaPlayer.isPlaying()) {
 
             int mediaDuration = mediaPlayer.getDuration();
-            int startDuration = mediaPlayer.getCurrentPosition();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss");
-
             mTvDur.setText(simpleDateFormat.format(mediaDuration));
             mSeekbar.setMax(mediaDuration);
-            mmTvPos.setText(simpleDateFormat.format(startDuration));
-            mSeekbar.setProgress(startDuration);
-            mHandler.postDelayed(UpdateSongTime, 100);
+            setTimeMusic();
+            updateTimeSong();
         }
     }
 
-    private Runnable UpdateSongTime = new Runnable() {
-        public void run() {
-            int startTime = mediaPlayer.getCurrentPosition();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss");
-            mmTvPos.setText(simpleDateFormat.format(startTime));
-            mSeekbar.setProgress((int) startTime);
-            mHandler.postDelayed(this, 100);
-        }
-    };
+    private void setTimeMusic() {
+        mSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                mediaPlayer.seekTo(mSeekbar.getProgress());
+            }
+        });
+    }
 
     private void cmdSetDataSource(Uri uri) {
         try {
@@ -140,7 +159,8 @@ public class FragmentPlayMusic extends DialogFragment {
 
     @Override
     public void onDestroy() {
-        mediaPlayer.release();
+        mediaPlayer.stop();
+//        mediaPlayer.release();
         super.onDestroy();
     }
 }

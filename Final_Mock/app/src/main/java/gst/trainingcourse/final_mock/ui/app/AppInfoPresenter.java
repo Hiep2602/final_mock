@@ -1,4 +1,4 @@
-package gst.trainingcourse.final_mock.app;
+package gst.trainingcourse.final_mock.ui.app;
 
 import android.content.Context;
 
@@ -8,18 +8,18 @@ import gst.trainingcourse.final_mock.models.AppInfo;
 
 public class AppInfoPresenter implements AppInfoContract.Presenter {
     private AppInfoContract.View view;
-    private InfoApp infoApp;
+    private GetInfoApp getInfoApp;
     private Context context;
 
     public AppInfoPresenter(AppInfoContract.View view, Context context) {
         this.view = view;
-        infoApp = new InfoApp();
+        getInfoApp = new GetInfoApp();
         this.context = context;
     }
 
     @Override
     public void getAppInfo() {
-        List<AppInfo> appInfos = infoApp.getmInfoApp(context);
+        List<AppInfo> appInfos = getInfoApp.getmInfoApp(context);
         view.showAppInfo(appInfos);
     }
 }

@@ -1,4 +1,4 @@
-package gst.trainingcourse.final_mock.app;
+package gst.trainingcourse.final_mock.ui.app;
 
 import java.util.List;
 

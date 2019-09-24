@@ -1,4 +1,4 @@
-package gst.trainingcourse.final_mock.photo;
+package gst.trainingcourse.final_mock.ui.photo;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -21,10 +21,14 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import gst.trainingcourse.final_mock.BuildConfig;
 import gst.trainingcourse.final_mock.R;
+import gst.trainingcourse.final_mock.RecyclerItemClickListener;
 import gst.trainingcourse.final_mock.adapter.PhotosAdapter;
+import gst.trainingcourse.final_mock.fragmentdialog.FragmentPlayMusic;
+import gst.trainingcourse.final_mock.models.ItemMusic;
 import gst.trainingcourse.final_mock.models.ItemPhoto;
 import gst.trainingcourse.final_mock.utils.Constants;
 import gst.trainingcourse.final_mock.utils.OnItemClick;
@@ -32,7 +36,8 @@ import gst.trainingcourse.final_mock.utils.OnItemClick;
 public class PhotoFragment extends Fragment implements PhotoContract.View {
     private RecyclerView mRvPhoto;
     private PhotosAdapter mAdapter;
-    private List<Uri> uris;
+    private List<Uri> uris = new ArrayList<>();
+    private List<String> itemSelected = new ArrayList<>();
 
     @Nullable
     @Override
@@ -60,22 +65,6 @@ public class PhotoFragment extends Fragment implements PhotoContract.View {
         mPhoto.getItemPhoto();
     }
 
-    private void toggleSelection(int position) {
-        mAdapter.toggleSelection(position);
-        int count = mAdapter.getSelectedItemCount();
-
-        if (count == 0) {
-        } else {
-            uris = new ArrayList<>();
-            for (int i = 0; i < count; i++) {
-                Uri u = FileProvider.getUriForFile(getContext(),
-                        BuildConfig.APPLICATION_ID + ".provider", new File(mAdapter.getmData()
-                                .get(position).getPathImage()));
-                uris.add(u);
-            }
-            Log.d("hsize", "toggleSelection: " + uris.size());
-        }
-    }
 
     private void openImage(int position) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -89,24 +78,51 @@ public class PhotoFragment extends Fragment implements PhotoContract.View {
         Log.d("photo", "showPhoto: " + itemPhotos.size());
         mAdapter = new PhotosAdapter(getContext());
         mAdapter.setData(itemPhotos);
-        mAdapter.setOnItemClick(mOnclickItem);
         mRvPhoto.setAdapter(mAdapter);
+        mRvPhoto.addOnItemTouchListener(new RecyclerItemClickListener(getContext()
+                , mRvPhoto, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if (itemSelected.size() > 0) {
+                    multiSelect(position);
+                } else {
+                    openImage(position);
+                }
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                multiSelect(position);
+            }
+        }));
     }
 
-    private OnItemClick mOnclickItem = new OnItemClick() {
-        @Override
-        public void onItemClick(int position) {
-            openImage(position);
-            Toast.makeText(getContext(), "asfaf" + position, Toast.LENGTH_SHORT).show();
+    private void multiSelect(int position) {
+        ItemPhoto data = mAdapter.getData(position);
+        if (data != null) {
+            if (itemSelected.contains(data.getPathImage()))
+                itemSelected.remove(data.getPathImage());
+            else
+                itemSelected.add(data.getPathImage());
+            mAdapter.setmItemSelect(itemSelected);
         }
+    }
 
-        @Override
-        public void onITemOnLongClick(View v, int position) {
-            Toast.makeText(getContext(), "" + position, Toast.LENGTH_SHORT).show();
-            toggleSelection(position);
-            Log.d("size", "onITemOnLongClick: " + uris.size());
-        }
-    };
+//    private OnItemClick mOnclickItem = new OnItemClick() {
+//        @Override
+//        public void onItemClick(View v, int position) {
+//            if (itemSelected.size() > 0) {
+//                toggleSelection(position);
+//            } else {
+//                openImage(position);
+//            }
+//        }
+//
+//        @Override
+//        public void onITemOnLongClick(View v, int position) {
+//            toggleSelection(position);
+//        }
+//    };
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -118,10 +134,15 @@ public class PhotoFragment extends Fragment implements PhotoContract.View {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.senddata:
-                if (uris != null) {
+                if (itemSelected.size() != 0) {
+                    for (int i = 0; i < itemSelected.size(); i++) {
+                        Uri u = FileProvider.getUriForFile(Objects.requireNonNull(getContext()),
+                                BuildConfig.APPLICATION_ID + ".provider", new File(itemSelected.get(i)));
+                        uris.add(u);
+                    }
                     Constants.shareData(uris, "*/*", getContext());
                 } else {
-                    Toast.makeText(getContext(), "Please select item", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please selected item", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

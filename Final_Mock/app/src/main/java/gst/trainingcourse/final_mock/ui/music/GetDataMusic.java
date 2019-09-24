@@ -1,4 +1,4 @@
-package gst.trainingcourse.final_mock.music;
+package gst.trainingcourse.final_mock.ui.music;
 
 import android.content.Context;
 import android.database.Cursor;

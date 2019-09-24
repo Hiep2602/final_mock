@@ -1,4 +1,4 @@
-package gst.trainingcourse.final_mock.app;
+package gst.trainingcourse.final_mock.ui.app;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -9,7 +9,7 @@ import java.util.List;
 
 import gst.trainingcourse.final_mock.models.AppInfo;
 
-public class InfoApp {
+public class GetInfoApp {
     private List<AppInfo> mAppInfos;
 
     public List<AppInfo> getmInfoApp(Context context) {
@@ -17,14 +17,14 @@ public class InfoApp {
         List<ApplicationInfo> applicationInfos = context.getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
         for (ApplicationInfo mInfo : applicationInfos) {
             if (context.getPackageManager().getLaunchIntentForPackage(mInfo.packageName) != null) {
-                mAppInfos.add(new AppInfo(mInfo.publicSourceDir, mInfo.loadLabel(context.getPackageManager())
-                        .toString(), mInfo.packageName, mInfo.loadIcon(context.getPackageManager())));
+                try {
+                    mAppInfos.add(new AppInfo(mInfo.publicSourceDir, mInfo.loadLabel(context.getPackageManager())
+                            .toString(), mInfo.packageName, mInfo.loadIcon(context.getPackageManager()), context.getPackageManager().getPackageInfo(mInfo.packageName, 0).versionName));
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return mAppInfos;
-    }
-
-    public void setmInfoApp(List<AppInfo> mInfoApp) {
-        this.mAppInfos = mInfoApp;
     }
 }
